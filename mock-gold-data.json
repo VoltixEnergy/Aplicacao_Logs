@@ -1,0 +1,166 @@
+{
+  "alert_sender_data": [
+    {
+      "priority": 2,
+      "title": "CPU elevada",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966.",
+      "metric_id": 3, 
+      "created_at": "2026-10-10T14:54:100Z"
+    },
+    {
+      "priority": 1,
+      "title": "Memory Usage High",
+      "description": "Memory usage has exceeded the threshold limit.",
+      "metric_id": 4,
+      "created_at": "2026-10-10T15:00:00Z"
+    },
+    {
+      "priority": 3,
+      "title": "Disk Space Low",
+      "description": "Disk space is running low on the server.",
+      "metric_id": 5,
+      "created_at": "2026-10-10T15:05:00Z"
+    }
+  ],
+  "dashboard": {
+    "charts": {
+      "server_health": {
+      "labels": [
+        "2026-10-10T14:54:100Z",
+        "2026-10-10T15:00:00Z",
+        "2026-10-10T15:05:00Z",
+        "2026-10-10T15:10:00Z",
+        "2026-10-10T15:15:00Z",
+        "2026-10-10T15:20:00Z",
+        "2026-10-10T15:25:00Z",
+        "2026-10-10T15:30:00Z",
+        "2026-10-10T15:35:00Z",
+        "2026-10-10T15:40:00Z",
+        "2026-10-10T15:45:00Z"
+      ],
+      "data": [
+        90,
+        75,
+        0,
+        85,
+        60,
+        90,
+        55,
+        0,
+        0,
+        0,
+        0
+      ]
+      },
+      "server_efficiency": {
+        "labels": [
+          "2026-10-10T14:54:100Z",
+          "2026-10-10T15:00:00Z",
+          "2026-10-10T15:05:00Z",
+          "2026-10-10T15:10:00Z",
+          "2026-10-10T15:15:00Z",
+          "2026-10-10T15:20:00Z",
+          "2026-10-10T15:25:00Z",
+          "2026-10-10T15:30:00Z",
+          "2026-10-10T15:35:00Z",
+          "2026-10-10T15:40:00Z",
+          "2026-10-10T15:45:00Z"
+        ],
+        "data": [
+          76,
+          70,
+          0,
+          65,
+          50,
+          80,
+          45,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "instances": [
+      {
+        "name": "exemplo",
+        "isActive": true,
+        "cpu_percent": 90,
+        "ram_percent": 70,
+        "disk_percent": 89,
+        "lastest_update": "2026-10-10T14:54:100Z"
+      },
+      {
+        "name": "server1",
+        "isActive": true,
+        "cpu_percent": 75,
+        "ram_percent": 60,
+        "disk_percent": 70,
+        "lastest_update": "2026-10-10T15:10:00Z"
+      },
+      {
+        "name": "server2",
+        "isActive": false,
+        "cpu_percent": 0,
+        "ram_percent": 0,
+        "disk_percent": 0,
+        "lastest_update": "2026-10-10T15:15:00Z"
+      },
+      {
+        "name": "server3",
+        "isActive": true,
+        "cpu_percent": 85,
+        "ram_percent": 65,
+        "disk_percent": 80,
+        "lastest_update": "2026-10-10T15:20:00Z"
+      },
+      {
+        "name": "server4",
+        "isActive": true,
+        "cpu_percent": 60,
+        "ram_percent": 50,
+        "disk_percent": 40,
+        "lastest_update": "2026-10-10T15:25:00Z"
+      },
+      {
+        "name": "server5",
+        "isActive": false,
+        "cpu_percent": 0,
+        "ram_percent": 0,
+        "disk_percent": 0,
+        "lastest_update": "2026-10-10T15:30:00Z"
+      },
+      {
+        "name": "server6",
+        "isActive": true,
+        "cpu_percent": 90,
+        "ram_percent": 80,
+        "disk_percent": 85,
+        "lastest_update": "2026-10-10T15:35:00Z"
+      },
+      {
+        "name": "server7",
+        "isActive": true,
+        "cpu_percent": 55,
+        "ram_percent": 45,
+        "disk_percent": 50,
+        "lastest_update": "2026-10-10T15:40:00Z"
+      },
+      {
+        "name": "server8",
+        "isActive": false,
+        "cpu_percent": 0,
+        "ram_percent": 0,
+        "disk_percent": 0,
+        "lastest_update": "2026-10-10T15:45:00Z"
+      }
+    ],
+    "kpis": {
+      "count_server": 9,
+      "count_server_active": 8,
+      "count_server_alert": 3,
+      "server_health": 90,
+      "server_efficiency": 76
+    }
+  }
+}
