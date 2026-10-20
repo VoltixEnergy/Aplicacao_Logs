@@ -34,6 +34,14 @@ public class Models {
         LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
+        System.out.println("Vou inserir no banco:");
+        System.out.println(sql);
+        System.out.println(metricaId);
+        System.out.println(prioridade);
+        System.out.println(tipo);
+        System.out.println(descricao);
+        System.out.println(dateTime.format(format));
+
         jdbcTemplate.update(sql,
                 metricaId,
                 prioridade,
@@ -66,8 +74,10 @@ public class Models {
                 WHERE instancia.endereco_mac = ?
                 LIMIT 1
                 """;
+        System.out.println("Vou fazer a query:");
+        System.out.println(sql);
         String email = jdbcTemplate.queryForObject(sql,String.class,macAddress);
-        return email;
+        return email.trim().toLowerCase();
     }
 
     public String selectUrlFromMacAddress(String macAddress) {
@@ -81,8 +91,10 @@ public class Models {
                 WHERE instancia.endereco_mac = ?
                 LIMIT 1
                 """;
+        System.out.println("Vou fazer a query:");
+        System.out.println(sql);
         String url = jdbcTemplate.queryForObject(sql,String.class,macAddress);
-        return url;
+        return url.trim().toLowerCase();
     }
 
     public String selectMacAddressFromMetricId(Integer metricId) {
@@ -94,6 +106,8 @@ public class Models {
                 WHERE metrica.id = ?
                 LIMIT 1
                 """;
+        System.out.println("Vou fazer a query:");
+        System.out.println(sql);
         String macAddres = jdbcTemplate.queryForObject(sql,String.class,metricId);
         return macAddres;
     }
@@ -120,16 +134,20 @@ public class Models {
             String bucket,
             String chave
     ) throws Exception {
+        System.out.println(bucket);
+        System.out.println(chave);
 
+        System.out.println("Vou pegar o arquivo");
         GetObjectRequest request = GetObjectRequest.builder()
                 .bucket(bucket)
                 .key(chave)
                 .build();
-
+        System.out.println("Arquivo pego com sucesso!");
+        System.out.println("Vou tentar le-lo e converte-lo");
         try (ResponseInputStream<GetObjectResponse> input =
                      s3.getObject(request)) {
-
             ObjectMapper mapper = new ObjectMapper();
+            System.out.println("Convertido com sucesso!");
             return mapper.readTree(input);
         }
     }
@@ -141,7 +159,12 @@ public class Models {
             String bucketDestino,
             String keyDestino
     ) {
+        System.out.println(bucketOrigem);
+        System.out.println(keyOrigem);
+        System.out.println(bucketDestino);
+        System.out.println(keyDestino);
         try {
+            System.out.println("Vou copiar o arquivo para o destino colocado");
             s3.copyObject(CopyObjectRequest.builder()
                     .sourceBucket(bucketOrigem)
                     .sourceKey(keyOrigem)
@@ -149,34 +172,44 @@ public class Models {
                     .destinationKey(keyDestino)
                     .build()
             );
-
+            System.out.println("Copiado!");
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        try {
+            System.out.println("Vou excluir o arquivo do destino de origem");
             s3.deleteObject(
                     DeleteObjectRequest.builder()
                             .bucket(bucketOrigem)
                             .key(keyOrigem)
                             .build()
             );
+            System.out.println("Excluido e processo concluido com sucesso!");
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
 // ----------------------------------- JIRA -------------------------------------------------------------
 
-    public void sendAlertToJira(String macAddress) {
+    public void sendAlertToJira(String macAddress, String title) {
 
         String baseUrl = selectUrlFromMacAddress(macAddress); // ex: https://seu-dominio.atlassian.net
-        String email = selectEmailFromMacAddress(macAddress);
+        System.out.println("Dei select no url");
+        String email = selectEmailFromMacAddress(macAddress); // ex: nome.sobrenome@email.com --> detalhe: ele tem que ser um membro no jira
+        System.out.println("Dei select no email");
         // LEMBRA DE MUDAR O TOKEN DO JIRA, ELE TROCA DEPOIS DE UM TEMPO
-        String apiToken = "ATATT3xFfGF0pUPTRDVHFjB3B7gq1Jb9IYr4Eat0eSSNTsU6cBKVWAwcJSRtOwfyHAJxQLTFqse9rfkbt6JwP-vr4i0Qdyuzo5GY_DLUPXvFNsBYjpwSzUkopXxqS4Fr9fg2h2KwbM3mUYi-3MJyxYMs8Fq3GVEVftG-tewTFwDYdup4ek_gTAg=53C630D8";
-
+        String apiToken = "API_TOKEN";
         Jira jira = new Jira(baseUrl, email, apiToken);
+        System.out.println("Criei a conexão com o Jira");
 
         try {
             // Cria uma issue no backlog do projeto informado
             String response = jira.createIssue(
                     "KAN", // Key do projeto, presente na URL do seu site
-                    "Issue criada via Java", // Nome da issue
+                    title, // Nome da issue
                     "Task" // Tipo da issue: "Task", "Bug", "Story", etc.
             );
 

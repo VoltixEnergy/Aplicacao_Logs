@@ -41,7 +41,7 @@ public class Main {
                 String macAddress = models.selectMacAddressFromMetricId(goldData.get(i).get("metric_id").asInt());
                 try {
                     // aqui ele ja vai mandar os dados tanto para o JIRA
-                    models.sendAlertToJira(macAddress);
+                    models.sendAlertToJira(macAddress, goldData.get(i).get("title").asText());
                     // tanto salvar no MYSQL que enviou o alerta
                     models.insertAlerta(
                             goldData.get(i).get("metric_id").asInt(),
