@@ -16,6 +16,7 @@ public class Main {
         S3Client s3Client = new S3Provider().getS3Client();
         String bucketName = "nome-do-bucket"; // ex: bucket-raw-bronze-01
         String key = "caminho/ate/o/arquivo/do/bucket"; // ex: 01-bronze/2026-04-06_10-30_ap01.json
+        String keyDesino = "caminho/ate/onde/vamos/mover/o/arquivo"; // seguindo o exemplo de cima -> ex: 01-bronze/processed/2026-04-06_10-30_ap01.json
 
         //------------------------------------------------ MAIN -------------------------------------------------------------------
 
@@ -47,6 +48,14 @@ public class Main {
                             goldData.get(i).get("priority").asInt(),
                             goldData.get(i).get("title").asText(),
                             goldData.get(i).get("description").asText()
+                    );
+                    // aqui nós vamos mover o arquivo para a pasta de processados
+                    models.moverArquivoS3(
+                            s3Client,
+                            bucketName,
+                            key,
+                            bucketName,
+                            keyDesino
                     );
                 } catch (RuntimeException e) {
                     throw new RuntimeException(e);

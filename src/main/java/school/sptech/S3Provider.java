@@ -12,9 +12,9 @@ public class S3Provider {
         // Se você está usando AWS Academy ou um laboratório com credenciais temporárias,
         // tem que usar session credentials
         this.credentials = AwsSessionCredentials.create(
-                "SUA_ACCESS_KEY",
-                "SUA_SECRET_KEY",
-                "SEU_SESSION_TOKEN"
+                "SUA_ACCESS_KEY", // LEMBRAR DE MUDAR A ACCESS KEY, MUDA TODA VEZ QUE INICIA O LABORATORIO
+                "SUA_SECRET_KEY", // LEMBRAR DE MUDAR A SECRET KEY, MUDA TODA VEZ QUE INICIA O LABORATORIO
+                "SEU_SESSION_TOKEN" // LEMBRAR DE MUDAR O SESSION TOKEN, MUDA TODA VEZ QUE INICIA O LABORATORIO
         );
     }
 

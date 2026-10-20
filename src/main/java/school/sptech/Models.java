@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 //import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import school.sptech.config.Jira;
 import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.services.s3.model.CopyObjectRequest;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -132,12 +134,40 @@ public class Models {
         }
     }
 
+    public void moverArquivoS3(
+            S3Client s3,
+            String bucketOrigem,
+            String keyOrigem,
+            String bucketDestino,
+            String keyDestino
+    ) {
+        try {
+            s3.copyObject(CopyObjectRequest.builder()
+                    .sourceBucket(bucketOrigem)
+                    .sourceKey(keyOrigem)
+                    .destinationBucket(bucketDestino)
+                    .destinationKey(keyDestino)
+                    .build()
+            );
+
+            s3.deleteObject(
+                    DeleteObjectRequest.builder()
+                            .bucket(bucketOrigem)
+                            .key(keyOrigem)
+                            .build()
+            );
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 // ----------------------------------- JIRA -------------------------------------------------------------
 
     public void sendAlertToJira(String macAddress) {
 
         String baseUrl = selectUrlFromMacAddress(macAddress); // ex: https://seu-dominio.atlassian.net
         String email = selectEmailFromMacAddress(macAddress);
+        // LEMBRA DE MUDAR O TOKEN DO JIRA, ELE TROCA DEPOIS DE UM TEMPO
         String apiToken = "ATATT3xFfGF0pUPTRDVHFjB3B7gq1Jb9IYr4Eat0eSSNTsU6cBKVWAwcJSRtOwfyHAJxQLTFqse9rfkbt6JwP-vr4i0Qdyuzo5GY_DLUPXvFNsBYjpwSzUkopXxqS4Fr9fg2h2KwbM3mUYi-3MJyxYMs8Fq3GVEVftG-tewTFwDYdup4ek_gTAg=53C630D8";
 
         Jira jira = new Jira(baseUrl, email, apiToken);
